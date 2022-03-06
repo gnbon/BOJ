@@ -1,34 +1,36 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+stack <string> s;
 
 int main(void)
 {
 	ios::sync_with_stdio(0);
 	cin.tie(0);
 	
-	int N;
-	cin >> N;
+	int T;
+	cin >> T;
 	
-	string ps;
-	for (int i = 0; i < N; i++) {
-		string answer = "YES";
-
-		stack<char> s;
-		cin >> ps;
-		for (int j = 0; j < ps.length(); j++) {
-			char cur = ps[j];
-			if (cur == '(') {
-				s.push('(');
-			} else if (!s.empty() && cur == ')' && s.top() == '(') {
-				s.pop();
-			}
-			else {
-				answer = "NO";
-				break;
-			}
-		}
-		if (!s.empty()) answer = "NO";
-		cout << answer << "\n";
-	}
+    string a;
+    int val;
+	for (int i = 0; i < T; i++) {
+        bool flag = true;
+        cin >> a;
+        for (int j = 0; j < a.length(); j++) {
+            if (a.substr(j, 1) == "(") {
+                s.push("(");
+            }
+            else if (a.substr(j, 1) == ")") {
+                if (!s.empty() && s.top() == "(") {
+                    s.pop();
+                }
+                else {
+                    flag = false;
+                    break;
+                }
+            }
+        }
+        if (s.empty() && flag) cout << "YES" << "\n";
+        else cout << "NO" << "\n";
+    }
 }
