@@ -1,33 +1,25 @@
-#include <iostream>
-#include <queue>
-
+#include <bits/stdc++.h>
 using namespace std;
-
-#define MAX 1000
-
-int graph[MAX][MAX];
-queue<pair<int, int>> q;
-
-int M, N;
-int days;
-
+#define X first
+#define Y second
+int board[1001][1001];
+int dist[1001][1001];
+int n, m;
+int ans;
 int dx[4] = { 1, -1, 0, 0 };
 int dy[4] = { 0, 0, 1, -1 };
+queue<pair<int, int>> Q;
 
 void bfs(void) {
-	while (!q.empty()) {
-		pair<int, int> cur = q.front();
-		q.pop();
-
-		for (int i = 0; i < 4; i++) {
-			int nx = cur.first + dx[i];
-			int ny = cur.second + dy[i];
-			if (nx < 0 || N <= nx || ny < 0 || M <= ny)
-				continue;
-			if (graph[nx][ny] == 0) {
-				graph[nx][ny] = graph[cur.first][cur.second] + 1;
-				q.push(make_pair(nx, ny));
-			}
+	while (!Q.empty()) {
+		auto cur = Q.front(); Q.pop();
+		for (int dir = 0; dir < 4; dir++) {
+			int nx = cur.X + dx[dir];
+			int ny = cur.Y + dy[dir];
+			if (nx < 0 || n <= nx || ny < 0 || m <= ny) continue;
+			if (dist[nx][ny] >= 0) continue;
+			dist[nx][ny] = dist[cur.X][cur.Y] + 1;
+			Q.push({nx, ny});
 		}
 	}
 }
@@ -36,33 +28,29 @@ int main() {
 	ios::sync_with_stdio(0);
 	cin.tie(0);
 
-	int fruit;
-
-	cin >> M >> N;
-
-	for (int i = 0; i < N; i++) {
-		for (int j = 0; j < M; j++) {
-			cin >> fruit;
-			graph[i][j] = fruit;
-
-			if (graph[i][j] == 1) {
-				q.push(make_pair(i, j));
-			}
+	cin >> m >> n;
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			cin >> board[i][j];
+			if (board[i][j] == 1)
+				Q.push({i, j});
+			if (board[i][j] == 0)
+				dist[i][j] = -1;
 		}
 	}
 
 	bfs();
 	
-	for (int i = 0; i < N; i++) {
-		for (int j = 0; j < M; j++) {
-			if (graph[i][j] == 0) {
+	int ans = 0;
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			if (dist[i][j] == -1) {
 				cout << -1;
 				return 0;
 			}
-			if (days < graph[i][j])
-				days = graph[i][j];
+			ans = max(ans, dist[i][j]);
 		}
 	}
 
-	cout << days - 1;
+	cout << ans;
 }
