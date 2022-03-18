@@ -1,22 +1,18 @@
 #include <iostream>
 using namespace std;
 
-int memo[11] = {1, 1, 2};
-
-int solution(int n) {
-	if (memo[n] != 0)
-		return memo[n];
-	else
-		return memo[n] = (solution(n - 1) + solution(n - 2)) + solution(n - 3);
-}
+int t, n;
+int dp[11] = {0, 1, 2, 4};
 
 int main(void)
 {
-	int T, n;
-	cin >> T;
-
-	for (int i = 0; i < T; i++) {
+	ios::sync_with_stdio(0);
+    cin.tie(0);
+	cin >> t;
+	while(t--) {
 		cin >> n;
-		cout << solution(n) << endl;
+		for(int i = 4; i <= n; i++)
+			dp[i] = dp[i-1] + dp[i-2] + dp[i-3];
+		cout << dp[n] << "\n";
 	}
 }
