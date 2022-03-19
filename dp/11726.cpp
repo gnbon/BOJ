@@ -1,18 +1,21 @@
 #include <iostream>
 using namespace std;
 
-int memo[1001] = {0, 1, 2};
-
-int solution(int n) {
-	if (memo[n] != 0)
-		return memo[n];
-	else
-		return memo[n] = (solution(n - 1) + solution(n - 2)) % 10007;
-}
+int n;
+int dp[1001] = {0, 1, 2};
 
 int main(void)
 {
+	ios::sync_with_stdio(0);
+	cin.tie(0);
 	int n;
 	cin >> n;
-	cout << solution(n) << endl;
+	if(n <= 2) {
+		cout << dp[n];
+		return 0;
+	}
+	for(int i = 3; i <= n; i++)
+		dp[i] = (dp[i-2] + dp[i-1]) % 10007;
+
+	cout << dp[n];
 }
