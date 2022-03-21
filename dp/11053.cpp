@@ -1,34 +1,24 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
+#include <bits/stdc++.h>
 using namespace std;
 
-int solution(int N, vector<int> A) {
-	int answer = 0;
-	int dp[1001];
-	
-	for (int i = 0; i < N; i++) {
-		cin >> A[i];
-		int dp_max = 0;
-		
-		for (int j = 0; j < i; j++) {
-			if (A[i] > A[j]) {
-				if (dp_max < dp[j])
-					dp_max = dp[j];
-			}
-		}
-		dp[i] = dp_max + 1;
-		answer = max(answer, dp[i]);
-	}
-	
-	return answer;
-}
+int n;
+int seq[1001];
+int dp[1001];
 
 int main(void)
 {
-	int N;
-	cin >> N;
-	vector<int> A(N, 1);
-		
-	cout << solution(N, A);
+	ios::sync_with_stdio(0);
+	cin.tie(0);
+
+	cin >> n;
+	for(int i = 0; i < n; i++)
+    	cin >> seq[i];
+	fill(dp, dp + n, 1);
+
+	for (int i = 0; i < n; i++)
+		for (int j = 0; j < i; j++)
+			if (seq[j] < seq[i])
+				dp[i] = max(dp[i], dp[j] + 1);
+
+	cout << *max_element(dp, dp + n);
 }
